@@ -1,8 +1,8 @@
 # United Kingdom of Great Britain and Northern Ireland Subdivisions ![](https://flagcdn.com/h40/gb.png)
 
 - **ISO Code**: GB
-- **Number of subdivisions**: 224
-- **Subdivision Type**: City corporation, Collecting of England and Wales, Collection of countries, Council area, Country, District, London borough, Metropolitan district, Province, Two-tier county, Unitary authority
+- **Number of subdivisions**: 221, with 128 official flag(s)
+- **Subdivision Types**: Unitary authority (80), Metropolitan district (36), Council area (32), London borough (32), Two-tier county (25), District (11), Country (3), City corporation (1), Province (1)
 - **ISO 3166-2 API link**: https://iso3166-2-api.vercel.app/api/alpha/GB
 
 | Code  | Subdivision Name         | Type | Flag Preview | Link |
@@ -55,7 +55,6 @@
 | GB-FAL | Falkirk | Council area | <img src='https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-FAL.svg' height='80'> | [GB-FAL.svg](https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-FAL.svg) |
 | GB-FLN | Flintshire [Sir y Fflint GB-FFL] | Unitary authority | <img src='https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-FLN.svg' height='80'> | [GB-FLN.svg](https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-FLN.svg) |
 | GB-FMO | Fermanagh and Omagh | District | <img src='https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-FMO.svg' height='80'> | [GB-FMO.svg](https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-FMO.svg) |
-| GB-GBN | Great Britain | Collection of countries | <img src='https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-GBN.svg' height='80'> | [GB-GBN.svg](https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-GBN.svg) |
 | GB-GLG | Glasgow City | Council area | <img src='https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-GLG.svg' height='80'> | [GB-GLG.svg](https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-GLG.svg) |
 | GB-GLS | Gloucestershire | Two-tier county | <img src='https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-GLS.svg' height='80'> | [GB-GLS.svg](https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-GLS.svg) |
 | GB-GWN | Gwynedd | Unitary authority | <img src='https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-GWN.svg' height='80'> | [GB-GWN.svg](https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-GWN.svg) |
@@ -123,7 +122,6 @@
 | GB-SWA | Swansea [Abertawe GB-ATA] | Unitary authority | <img src='https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-SWA.jpeg' height='80'> | [GB-SWA.jpeg](https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-SWA.jpeg) |
 | GB-SWD | Swindon | Unitary authority | <img src='https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-SWD.png' height='80'> | [GB-SWD.png](https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-SWD.png) |
 | GB-TOB | Torbay | Unitary authority | <img src='https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-TOB.png' height='80'> | [GB-TOB.png](https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-TOB.png) |
-| GB-UKM | United Kingdom | Country | <img src='https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-UKM.svg' height='80'> | [GB-UKM.svg](https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-UKM.svg) |
 | GB-VGL | Vale of Glamorgan, The [Bro Morgannwg GB-BMG] | Unitary authority | <img src='https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-VGL.svg' height='80'> | [GB-VGL.svg](https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-VGL.svg) |
 | GB-WAR | Warwickshire | Two-tier county | <img src='https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-WAR.svg' height='80'> | [GB-WAR.svg](https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-WAR.svg) |
 | GB-WBK | West Berkshire | Unitary authority | <img src='https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-WBK.svg' height='80'> | [GB-WBK.svg](https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-WBK.svg) |
@@ -164,7 +162,6 @@ United Kingdom of Great Britain and Northern Ireland ISO 3166-2 subdivisions wit
 * **GB-DAL: Darlington (Unitary authority)**
 * **GB-DER: Derby (Unitary authority)**
 * **GB-DGY: Dumfries and Galloway (Council area)**
-* **GB-EAW: England and Wales (Collecting of England and Wales)**
 * **GB-EDU: East Dunbartonshire (Council area)**
 * **GB-ENF: Enfield (London borough)**
 * **GB-FIF: Fife (Council area)**

@@ -2,17 +2,39 @@ import os
 import argparse
 import pandas as pd
 import iso3166
-from iso3166_2 import *
+from iso3166_2 import Subdivisions
 
 #base URL to iso3166-2-flags folder in repo
 base_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags"
 
-#read in the CSV that has the notes section data, if applicable, for each markdown file, reindex and assign
-notes_df = pd.read_csv(os.path.join("iso3166-flags-metadata", "iso3166_flag_notes.csv"), header=0).fillna("")
-notes_df = notes_df.reset_index()
-notes_df = notes_df.assign(countryCode=notes_df["index"], notes=notes_df["countryCode"])[["countryCode", "notes"]]
+#path to the CSV that has the notes section data, if applicable, for each markdown file
+notes_csv_path = os.path.join("iso3166-flags-metadata", "iso3166_flag_notes.csv")
 
-def create_markdown_str(country_code: str, input_folder: str) -> None:
+#cache for the parsed notes CSV, populated on first use by get_notes_df()
+notes_df = None
+
+def get_notes_df() -> pd.DataFrame:
+    """
+    Read and cache the CSV of per-country notes. The CSV is read on first use rather than
+    at import time so that importing this module doesn't depend on the current working
+    directory, and so a missing notes file doesn't make the module unimportable.
+
+    Returns
+    =======
+    :notes_df: pd.DataFrame
+        dataframe of per-country notes, with an empty countryCode/notes frame returned
+        if the notes CSV isn't present.
+    """
+    global notes_df
+    if notes_df is None:
+        if os.path.isfile(notes_csv_path):
+            notes_df = pd.read_csv(notes_csv_path, header=0).fillna("")
+        else:
+            print(f"Notes CSV not found, skipping notes sections: {notes_csv_path}.")
+            notes_df = pd.DataFrame(columns=["countryCode", "notes"])
+    return notes_df
+
+def create_markdown_str(country_code: str, input_folder: str) -> str:
     """
     Create custom README for inputted country's subdivision folder. This function compiles
     the output string which is appended to the country folder's README. The README will list 
@@ -75,12 +97,19 @@ def create_markdown_str(country_code: str, input_folder: str) -> None:
     output_str = f"# {country_name} Subdivisions ![](https://flagcdn.com/h40/{country_code.lower()}.png)\n\n"
     output_str += f"- **ISO Code**: {country_code}\n"
 
-    #get list of all subdivision types for country
-    subdivision_types = sorted({entry["type"] for entry in all_subdivisions.values() if "type" in entry})
+    #count subdivisions by type
+    subdivision_type_counts = {}
+    for entry in all_subdivisions.values():
+        if "type" in entry:
+            type_name = entry["type"]
+            subdivision_type_counts[type_name] = subdivision_type_counts.get(type_name, 0) + 1
+    
+    #format subdivision types with counts, sorted by count descending
+    subdivision_types_str = ', '.join([f"{type_name} ({count})" for type_name, count in sorted(subdivision_type_counts.items(), key=lambda x: x[1], reverse=True)])
 
     #add some useful data about the country's subdivision 
-    output_str += f"- **Number of subdivisions**: {len(all_subdivisions)}\n"
-    output_str += f"- **Subdivision Type**: {', '.join(subdivision_types)}\n"
+    output_str += f"- **Number of subdivisions**: {len(all_subdivisions)}, with {len(all_files)} official flag(s)\n"
+    output_str += f"- **Subdivision Types**: {subdivision_types_str}\n"
     output_str += f"- **ISO 3166-2 API link**: https://iso3166-2-api.vercel.app/api/alpha/{country_code}\n\n"
 
     #create table that will display each subdivisions code, name, type, flag & link on repo
@@ -124,12 +153,13 @@ def create_markdown_str(country_code: str, input_folder: str) -> None:
                     output_str += f"\n* **{subd.upper()}: {all_subdivisions[subdiv].name} ({all_subdivisions[subdiv].type})**"
 
     #get the row data for the current country code
-    country_code_notes = notes_df[notes_df['countryCode'] == country_code]
+    country_notes_df = get_notes_df()
+    country_code_notes = country_notes_df[country_notes_df['countryCode'] == country_code]['notes'].values
 
     #append any notes for the country/subdivisions, if applicable
-    if (country_code_notes['notes'].values != ""):
+    if (len(country_code_notes) > 0 and country_code_notes[0] != ""):
         output_str += "\n\n## Notes\n"
-        output_str += country_code_notes['notes'].values[0]
+        output_str += country_code_notes[0]
 
     return output_str
 
@@ -304,17 +334,15 @@ if __name__ == '__main__':
     #parse input arguments using ArgParse 
     parser = argparse.ArgumentParser(description="Script for generating the markdown files for each country's subdivision folders.")
 
-    parser.add_argument('-flag_input_folder', '--flag_input_folder', type=str, required=False, default="iso3166-2-flags-edit-this-one", 
+    parser.add_argument('-flag_input_folder', '--flag_input_folder', type=str, required=False, default="iso3166-2-flags",
         help='Input folder of ISO 3166-2 flags to generate README for.')
-    parser.add_argument('-country_subfolder', '--country_subfolder', type=str, required=False, default="", 
+    parser.add_argument('-country_subfolder', '--country_subfolder', type=str, required=False, default="",
         help='Specific subfolder of country subdivisions to generate README for. If a subfolder and main folder name are input this arg will take precedence.')
-    parser.add_argument('-output_readme_folder', '--output_readme_folder', type=str, required=False, default="", 
+    parser.add_argument('-output_readme_folder', '--output_readme_folder', type=str, required=False, default="",
         help="Specific output folder to store the generated markdown files, by default they will be stored within the country's subfolder.")
-    parser.add_argument('-exclude_readme', '--exclude_readme', required=False, action=argparse.BooleanOptionalAction, default=1, 
-        help='Set to 1 to exclude the country markdown files in the overall file count and metadata calculation.')
-    
+
     #parse input args
     args = parser.parse_args()
-    
+
     #create readme for input folder of flags or individual subfolder
     create_readme(**vars(args))

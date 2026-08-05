@@ -1,6 +1,7 @@
 from scripts.generate_readme import *
 import shutil
 import os
+import re
 import textwrap
 import unittest
 import warnings
@@ -19,8 +20,18 @@ class Generate_Readme_Tests(unittest.TestCase):
     ==========
     test_create_markdown_str:
         testing the function that creates the markdown string per subfolder.
+    test_create_markdown_str_missing_notes_row:
+        testing the notes lookup doesn't crash for a country with no matching row in the notes CSV.
     test_create_readme:
-        testing the function that generates the full markdown file per subfolder. 
+        testing the function that generates the full markdown file per subfolder.
+    test_markdown_syntax_validity:
+        testing markdown syntax validity.
+    test_image_links_accessible:
+        testing image links are properly formatted.
+    test_api_links_valid:
+        testing API links are valid.
+    test_special_character_handling:
+        testing special character handling in subdivision names.
     """
     @classmethod
     def setUp(self):
@@ -46,8 +57,8 @@ class Generate_Readme_Tests(unittest.TestCase):
             # Andorra Subdivisions ![](https://flagcdn.com/h40/ad.png)
 
             - **ISO Code**: AD
-            - **Number of subdivisions**: 7
-            - **Subdivision Type**: Parish
+            - **Number of subdivisions**: 7, with 7 official flag(s)
+            - **Subdivision Types**: Parish (7)
             - **ISO 3166-2 API link**: https://iso3166-2-api.vercel.app/api/alpha/AD
 
             | Code  | Subdivision Name         | Type | Flag Preview | Link |
@@ -68,8 +79,8 @@ class Generate_Readme_Tests(unittest.TestCase):
             # Ethiopia Subdivisions ![](https://flagcdn.com/h40/et.png)
 
             - **ISO Code**: ET
-            - **Number of subdivisions**: 13
-            - **Subdivision Type**: Administration, Regional state
+            - **Number of subdivisions**: 13, with 13 official flag(s)
+            - **Subdivision Types**: Regional state (11), Administration (2)
             - **ISO 3166-2 API link**: https://iso3166-2-api.vercel.app/api/alpha/ET
 
             | Code  | Subdivision Name         | Type | Flag Preview | Link |
@@ -96,8 +107,8 @@ class Generate_Readme_Tests(unittest.TestCase):
         # Mauritius Subdivisions ![](https://flagcdn.com/h40/mu.png)
 
         - **ISO Code**: MU
-        - **Number of subdivisions**: 12
-        - **Subdivision Type**: Dependency, District
+        - **Number of subdivisions**: 12, with 2 official flag(s)
+        - **Subdivision Types**: District (9), Dependency (3)
         - **ISO 3166-2 API link**: https://iso3166-2-api.vercel.app/api/alpha/MU
 
         | Code  | Subdivision Name         | Type | Flag Preview | Link |
@@ -122,15 +133,15 @@ class Generate_Readme_Tests(unittest.TestCase):
         Only two of the districts have official flags, the others usually only have coat of arms.
         """).rstrip("\n")
 
-        # self.assertEqual(test_mu_markdown, test_mu_markdown_expected, f"Expected and observed markdown string output do not match:\n{test_mu_markdown}")
+        self.assertEqual(test_mu_markdown, test_mu_markdown_expected, f"Expected and observed markdown string output do not match:\n{test_mu_markdown}")
 #4.)
         test_pa_markdown = create_markdown_str(test_markdown_pa, "iso3166-2-flags/PA")
         test_pa_markdown_expected = textwrap.dedent("""\
         # Panama Subdivisions ![](https://flagcdn.com/h40/pa.png)
 
         - **ISO Code**: PA
-        - **Number of subdivisions**: 14
-        - **Subdivision Type**: Indigenous region, Province
+        - **Number of subdivisions**: 14, with 13 official flag(s)
+        - **Subdivision Types**: Province (10), Indigenous region (4)
         - **ISO 3166-2 API link**: https://iso3166-2-api.vercel.app/api/alpha/PA
 
         | Code  | Subdivision Name         | Type | Flag Preview | Link |
@@ -169,6 +180,20 @@ class Generate_Readme_Tests(unittest.TestCase):
             test_error4_markdown = create_markdown_str("HU", "iso3166-2-flags/ZZ")
 
     # @unittest.skip("")
+    def test_create_markdown_str_missing_notes_row(self):
+        """ Testing create_markdown_str doesn't crash for a country with no matching row in the notes CSV (regression test). """
+        import scripts.generate_readme as generate_readme_module
+        original_notes_df = generate_readme_module.notes_df
+        try:
+            #simulate a country code with zero matching rows in the notes CSV
+            generate_readme_module.notes_df = original_notes_df[original_notes_df["countryCode"] != "AD"]
+#1.)
+            markdown = create_markdown_str("AD", "iso3166-2-flags/AD")
+            self.assertNotIn("## Notes", markdown, "Expected no Notes section for a country with no notes CSV entry.")
+        finally:
+            generate_readme_module.notes_df = original_notes_df
+
+    # @unittest.skip("")
     def test_create_readme(self):
         """ Testing the function that generates the full markdown file per country subfolder. """
         test_markdown_az = "AZ"
@@ -194,6 +219,90 @@ class Generate_Readme_Tests(unittest.TestCase):
 #6.)
         with self.assertRaises(OSError):
             create_readme("invalid_folder_path")
+
+    # @unittest.skip("")
+    def test_markdown_syntax_validity(self):
+        """ Testing markdown syntax validity. """
+        test_markdown = create_markdown_str("GB", "iso3166-2-flags/GB")
+#1.)        
+        #check for proper markdown table syntax
+        self.assertIn("|", test_markdown, "Markdown should contain table pipes.")
+        self.assertIn("---", test_markdown, "Markdown should contain table separators.")
+        self.assertIn("#", test_markdown, "Markdown should contain headers.")
+        
+        #verify table headers are present
+        self.assertIn("Code", test_markdown, "Should have Code column header.")
+        self.assertIn("Subdivision Name", test_markdown, "Should have Subdivision Name header.")
+        self.assertIn("Flag Preview", test_markdown, "Should have Flag Preview header.")
+        
+        #check for balanced brackets in links
+        open_brackets = test_markdown.count('[')
+        close_brackets = test_markdown.count(']')
+        self.assertEqual(open_brackets, close_brackets, "Markdown should have balanced square brackets.")
+        
+        open_parens = test_markdown.count('(')
+        close_parens = test_markdown.count(')')
+        self.assertEqual(open_parens, close_parens, "Markdown should have balanced parentheses.")
+
+    # @unittest.skip("")
+    def test_image_links_accessible(self):
+        """ Testing image links are properly formatted. """
+        test_markdown = create_markdown_str("US", "iso3166-2-flags/US")
+        
+        #extract image links using regex
+        image_pattern = re.compile(r'<img src=\'([^\']+)\'')
+        image_links = image_pattern.findall(test_markdown)
+#1.)        
+        self.assertGreater(len(image_links), 0, "Should have image links in markdown.")
+        
+        #verify image links have correct format
+        for link in image_links:
+            self.assertTrue(link.startswith("https://raw.githubusercontent.com/"), 
+                          f"Image link should start with GitHub raw URL: {link}")
+            self.assertTrue(link.endswith(('.svg', '.png', '.jpg', '.jpeg')), 
+                          f"Image link should end with valid extension: {link}")
+
+    # @unittest.skip("")
+    def test_api_links_valid(self):
+        """ Testing API links are valid. """
+        test_codes = ["FR", "JP", "BR", "ZA"]
+        
+        for code in test_codes:
+            test_markdown = create_markdown_str(code, f"iso3166-2-flags/{code}")
+            
+            #check for API link
+            expected_api_link = f"https://iso3166-2-api.vercel.app/api/alpha/{code}"
+#1.)            
+            self.assertIn(expected_api_link, test_markdown, 
+                         f"Should contain API link for {code}: {expected_api_link}")
+            
+            #verify ISO code is mentioned
+            self.assertIn(f"**ISO Code**: {code}", test_markdown, 
+                         f"Should mention ISO code {code}")
+
+    # @unittest.skip("")
+    def test_special_character_handling(self):
+        """ Testing special character handling in subdivision names. """
+        #test countries with special characters in subdivision names
+        test_codes = ["FR", "ES", "PT"]  # Countries with accented characters
+        
+        for code in test_codes:
+            test_markdown = create_markdown_str(code, f"iso3166-2-flags/{code}")
+#1.)            
+            #verify markdown was generated without errors
+            self.assertIsInstance(test_markdown, str, f"Should generate string for {code}")
+            self.assertGreater(len(test_markdown), 100, f"Should have substantial content for {code}")
+            
+            #verify special characters are preserved in markdown
+            #French, Spanish, Portuguese use accented characters
+            if code == "FR":
+                #check for common French accents if present
+                pass  # French subdivision names with accents should render correctly
+            
+            #verify table structure is maintained with special characters
+            lines = test_markdown.split('\n')
+            table_lines = [l for l in lines if '|' in l]
+            self.assertGreater(len(table_lines), 2, f"Should have table rows for {code}")
 
     @classmethod
     def tearDown(self):

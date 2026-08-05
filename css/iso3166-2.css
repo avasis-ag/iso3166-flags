@@ -1,36 +1,21 @@
-.fib { 
-	background-size: contain; 
-	background-position: 50%; 
-	background-repeat: no-repeat; 
-}                 
-.fi { 
-	background-size: contain; 
-	background-position: 50%; 
-	background-repeat: no-repeat; 
-	position: relative;                 
-	display: inline-block; 
-	width: 1.33333333em; 
-	line-height: 1em; 
-}                 
-.fi.fis { 
-	width: 1em; 
+.fib {
+	background-size: contain;
+	background-position: 50%;
+	background-repeat: no-repeat;
 }
-.fib { 
-	background-size: contain; 
-	background-position: 50%; 
-	background-repeat: no-repeat; 
-}                 
-.fi { 
-	background-size: contain; 
-	background-position: 50%; 
-	background-repeat: no-repeat; 
-	position: relative;                 
-	display: inline-block; 
-	width: 1.33333333em; 
-	line-height: 1em; 
-}                 
-.fi.fis { 
-	width: 1em; 
+
+.fi {
+	background-size: contain;
+	background-position: 50%;
+	background-repeat: no-repeat;
+	position: relative;
+	display: inline-block;
+	width: 1.33333333em;
+	line-height: 1em;
+}
+
+.fi.fis {
+	width: 1em;
 }
 
 .fi-ad-02 {
@@ -3053,10 +3038,6 @@
 	background-image: url(iso3166-2-flags/GB/GB-FMO.svg);
 }
 
-.fi-gb-gbn {
-	background-image: url(iso3166-2-flags/GB/GB-GBN.svg);
-}
-
 .fi-gb-glg {
 	background-image: url(iso3166-2-flags/GB/GB-GLG.svg);
 }
@@ -3323,10 +3304,6 @@
 
 .fi-gb-tob {
 	background-image: url(iso3166-2-flags/GB/GB-TOB.png);
-}
-
-.fi-gb-ukm {
-	background-image: url(iso3166-2-flags/GB/GB-UKM.svg);
 }
 
 .fi-gb-vgl {

@@ -10,7 +10,8 @@
 <!-- [![npm version](https://badge.fury.io/js/iso3166-flags.svg)](https://badge.fury.io/js/iso3166-flags) -->
 <!-- [![codecov](https://codecov.io/gh/amckenna41/iso3166-flags/branch/main/graph/badge.svg)](https://codecov.io/gh/amckenna41/iso3166-flags) -->
 
-> **iso3166-flags** is a bespoke, verbose and comprehensive dataset of all <em>ISO 3166-1</em> & <em>ISO 3166-2</em> country and regional/subdivision codes flag icons in SVG format. The dataset currently has **250** country/territorial flags and **2,845** regional/subdivision flags.
+> **iso3166-flags** is a bespoke, verbose and comprehensive dataset of all <em>ISO 3166-1</em> & <em>ISO 3166-2</em> country and regional/subdivision codes flag icons in SVG format. The dataset currently has **250** country/territorial flags and **2,843** regional/subdivision flags. A front-end interactive map of the flag dataset is available here: 
+https://iso3166-flags.vercel.app/
 
 <p align="center">
   <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Flag-map_of_the_world_%282017%29.png" alt="globe" height="400" width="700"/>
@@ -24,14 +25,16 @@
 
 | Total Flags |    ISO3166-1 Flags   |    ISO3166-2 Flags    |  SVG  |  PNG  | JPEG / JPG | Other | Total Dataset Size (MB) | ISO3166-1 Dataset Size (MB) | ISO3166-2 Dataset Size (MB) |
 |-------------|------------------------|------------------------|-------|-------|------------|-------|-------------------------|------------------------------|------------------------------|
-| 3,095       | 250                    | 2,845                  | 2,243 | 798   | 54         | 0     | 341.262                 | 1.611                        | 339.650                      |
+| 3,093       | 250                    | 2,843                  | 2,241 | 798   | 54         | 0     | 341.262                 | 1.611                        | 339.650                      |
 
 
 Table of Contents
 -----------------
   * [Introduction](#introduction)
   * [Installation](#installation)
+  * [CDN](#cdn)
   * [Usage](#usage)
+  * [Comparison](#comparison)
   * [Updates](#updates)
   * [Directories](#directories)
   * [Issues or Contributing](#issues-or-contributing)
@@ -48,7 +51,7 @@ A <b>Medium</b> article that dives deeper into `iso3166-flags` is available [her
 
 `iso3166-flags` is a **comprehensive**, **verbose** and **bespoke** repository of all ISO 3166-1 and ISO 3166-2 country and regional/subdivision flag icons, respectively. The flags list is according to the International Organisation for Standards that define codes for the names of countries, dependent territories, special areas of geographical interest, and their principal subdivisions [[1]](#references). 
 
-**Currently the dataset contains <em>250</em> ISO 3166-1 country/territorial flag icons and <em>2,845</em> ISO 3166-2 regional/subdivision flags.** <br> 
+**Currently the dataset contains <em>250</em> ISO 3166-1 country/territorial flag icons and <em>2,843</em> ISO 3166-2 regional/subdivision flags.** <br> 
 
 The <b>ISO 3166-1</b> flags are those of the names of countries and their subdivisions that can be broken into three sets of country codes:
 * *ISO 3166-1 alpha-2* – two-letter country codes which are the most widely used of the three, and used most prominently for the Internet's country code top-level domains (with a few exceptions).
@@ -62,7 +65,7 @@ The <b>ISO 3166-3</b> icons are those of countries and their subdivisions – Pa
 ### Motivation
 `iso3166-flags` is a part of a larger suite of my **custom-built and bespoke applications** that utilise the ISO 3166 country and subdivision codes. The primary application is [`iso3166-2`][iso3166_2] which is is a structured lightweight custom-built Python package and dataset, and accompanying RESTful API, that can be used to access all of the world's ISO 3166-2 subdivision data. 
 
-One of the attributes in the `iso3166-2` software package is the `flag` attribute - the subdivisions offical flag. When creating this dataset, there was no accurate or widely available dataset of the world's thousands of regional flags, **so I created one!** 
+One of the attributes in the `iso3166-2` software package is the `flag` attribute - the subdivisions official flag. When creating this dataset, there was no accurate or widely available dataset of the world's thousands of regional flags, **so I created one!** 
 
 <!-- Alongside the `iso3166-2` software, I also created the [`iso3166-updates`][iso3166_updates] repo. This is a software and accompanying REST API that checks for any updates/changes to the ISO 3166-1 and ISO 3166-2 country codes and subdivision naming conventions, as per the ISO 3166 newsletter (https://www.iso.org/iso-3166-country-codes.html) and Online Browsing Platform (OBP) (https://www.iso.org/obp/ui). Thus it ensures the `iso3166-2` and `iso3166-flags` are kept up-to-date. -->
 
@@ -84,9 +87,28 @@ Alternatively, each of the flag datasets are available as releases on the repo w
 https://github.com/amckenna41/iso3166-flags/releases
 ```
 
+## CDN
+
+Every file is accessible instantly via [jsDelivr](https://www.jsdelivr.com/) — no installation or local clone required:
+
+```html
+<!-- ISO 3166-1 CSS (country flags) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/amckenna41/iso3166-flags@main/css/iso3166-1.css">
+
+<!-- ISO 3166-2 CSS (subdivision flags) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/amckenna41/iso3166-flags@main/css/iso3166-2.css">
+```
+
+Minified versions are also available:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/amckenna41/iso3166-flags@main/css/iso3166-1.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/amckenna41/iso3166-flags@main/css/iso3166-2.min.css">
+```
+
 Usage
 -----
-The flags can be implemented in-line by referencing the CSS class of the respective flag using the [`ISO 3166-1`](https://github.com/amckenna41/iso3166-flags/css/iso3166-1.css) or [`ISO 3166-2`](https://github.com/amckenna41/iso3166-flags/css/iso3166-2.css) CSS file. For ISO 3166-1 icons add the classes `.fi` and `.fi-xx` (where `xx` is the ISO 3166-1-alpha-2 code of a country) to an empty `<span>` [[5]](#references). To add a squared version flag additionally add the class `fis`. 
+The flags can be implemented in-line by referencing the CSS class of the respective flag using the [`ISO 3166-1`](https://github.com/amckenna41/iso3166-flags/blob/main/css/iso3166-1.css) or [`ISO 3166-2`](https://github.com/amckenna41/iso3166-flags/blob/main/css/iso3166-2.css) CSS file. For ISO 3166-1 icons add the classes `.fi` and `.fi-xx` (where `xx` is the ISO 3166-1-alpha-2 code of a country) to an empty `<span>` [[3]](#references). To add a squared version flag additionally add the class `fis`. 
 
 For example, adding the normal and squared flags for Andorra, Denmark & Panama:
 ```html
@@ -103,6 +125,32 @@ For example, adding the Hungarian county of Heves (HU-HE), the South Sudanese st
 <span class="fi fi-ss-ee"></span> <span class="fi fi-ss-ee fis"></span>
 <span class="fi fi-tw-mia"></span> <span class="fi fi-tw-mia fis"></span>
 ```
+
+### Accessibility
+
+Flag `<span>` elements are visually empty by default. For accessible applications, add `role="img"` and `aria-label` with the country or subdivision name:
+
+```html
+<span class="fi fi-gb" role="img" aria-label="Flag of the United Kingdom"></span>
+<span class="fi fi-gb-sct" role="img" aria-label="Flag of Scotland"></span>
+```
+
+## Comparison
+
+`iso3166-flags` is the only open dataset that combines comprehensive ISO 3166-1 **and** ISO 3166-2 flag coverage in a single, CSS-ready package:
+
+| Feature | iso3166-flags | [lipis/flag-icons][flag-icons-repo] |
+|---|:---:|:---:|
+| ISO 3166-1 country flags | **250** | 258 (incl. extras) |
+| **ISO 3166-2 subdivision flags** | **2,843** | **0** |
+| SVG format | ✅ | ✅ |
+| CSS sprite | ✅ | ✅ |
+| Minified CSS | ✅ | ✅ |
+| npm package | ✅ | ✅ |
+| CDN via jsDelivr | ✅ | ✅ |
+| Per-flag metadata (dimensions, quality, colours) | ✅ | — |
+
+> The defining differentiator is the **2,843 ISO 3166-2 subdivision flags** — no other single dataset or package provides this breadth of regional flag coverage.
 
 Updates
 -------
@@ -130,9 +178,9 @@ Directories
 
 ## Other ISO 3166 repositories
 Below are some of my other **custom-built** repositories that relate to the ISO 3166 standard! ⚡
-* [iso3166-2](): a lightweight custom-built bespoke Python package, dataset, and accompanying API, that can be used to access all of the world's ISO 3166-2 subdivision data. A plethora of data attributes are available per country and subdivision including: name, local name, code, parent code, type, lat/longitude and flag. Currently, the package and API supports data from 250 countries/territories, according to the ISO 3166-1 standard and >5000 subdivisions, according to the ISO 3166-2 standard.
+* [iso3166-2](https://github.com/amckenna41/iso3166-2): a lightweight custom-built bespoke Python package, dataset, and accompanying API, that can be used to access all of the world's ISO 3166-2 subdivision data. A plethora of data attributes are available per country and subdivision including: name, local name, code, parent code, type, lat/longitude and flag. Currently, the package and API supports data from 250 countries/territories, according to the ISO 3166-1 standard and >5000 subdivisions, according to the ISO 3166-2 standard.
 * [iso3166-2-api](https://github.com/amckenna41/iso3166-2-api): frontend RESTful API for iso3166-2.
-* [iso3166-updates](https://github.com/amckenna41/iso3166-update): software and accompanying RESTful API that checks for any updates/changes to the ISO 3166-1 and ISO 3166-2 country codes and subdivision naming conventions, as per the ISO 3166 newsletter (https://www.iso.org/iso-3166-country-codes.html) and Online Browsing Platform (OBP) (https://www.iso.org/obp/ui).
+* [iso3166-updates](https://github.com/amckenna41/iso3166-updates): software and accompanying RESTful API that checks for any updates/changes to the ISO 3166-1 and ISO 3166-2 country codes and subdivision naming conventions, as per the ISO 3166 newsletter (https://www.iso.org/iso-3166-country-codes.html) and Online Browsing Platform (OBP) (https://www.iso.org/obp/ui).
 * [iso3166-updates-api](https://github.com/amckenna41/iso3166-updates-api): frontend RESTful API for iso3166-updates.
 <!-- * [iso3166-2-export](https://github.com/amckenna41/iso3166-2-export): scripts for full ISO 3166-2 subdivision data export. -->
 
@@ -175,5 +223,5 @@ References
 [fuzzywuzzy]: https://pypi.org/project/fuzzywuzzy/
 [iso3166_updates]: https://github.com/amckenna41/iso3166-updates
 [Issues]: https://github.com/amckenna41/iso3166-flags/issues
-[updates_md]: https://github.com/amckenna41/iso3166-2/blob/main/UPDATES.md
+[updates_md]: https://github.com/amckenna41/iso3166-updates/blob/main/UPDATES.MD
 [medium]: https://ajmckenna69.medium.com/545bc6eaa467
